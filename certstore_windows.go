@@ -76,7 +76,13 @@ type winStore struct {
 	store C.HCERTSTORE
 }
 
-var StoreOptions UseStore
+type StoreTypes struct {
+	CurrentUser    bool
+	LocalMachine   bool
+	CurrentService bool
+}
+
+var StoreOptions StoreTypes
 
 func MachineStore() {
 	StoreOptions.CurrentUser = false
