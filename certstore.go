@@ -17,6 +17,12 @@ func Open() (Store, error) {
 	return openStore()
 }
 
+type UseStore struct {
+	CurrentUser    bool
+	LocalMachine   bool
+	CurrentService bool
+}
+
 // Store represents the system's certificate store.
 type Store interface {
 	// Identities gets a list of identities from the store.
