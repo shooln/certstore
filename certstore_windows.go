@@ -84,25 +84,23 @@ type UseStore struct {
 	CurrentService bool
 }
 
-// SetOption sets the selected option and ensures only one option is selected
-func (u *UseStore) SetOption(option string) error {
-	switch option {
-	case "CurrentUser":
-		u.CurrentUser = true
-		u.LocalMachine = false
-		u.CurrentService = false
-	case "LocalMachine":
-		u.CurrentUser = false
-		u.LocalMachine = true
-		u.CurrentService = false
-	case "CurrentService":
-		u.CurrentUser = false
-		u.LocalMachine = false
-		u.CurrentService = true
-	default:
-		return fmt.Errorf("invalid option: %s", option)
-	}
-	return nil
+func useMachineStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = true
+}
+
+func useUserStore() {
+	StoreOptions.CurrentUser = true
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = false
+}
+
+func useServiceStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = true
+	StoreOptions.LocalMachine = false
+
 }
 
 // openStore opens the current user's personal cert store.
