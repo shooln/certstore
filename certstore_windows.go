@@ -64,10 +64,11 @@ const (
 // API will be used.
 //
 // Possible values are:
-//   0x00000000 —                                      — Only use CryptoAPI.
-//   0x00010000 — CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG  — Prefer CryptoAPI.
-//   0x00020000 — CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG — Prefer CNG.
-//   0x00040000 — CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG   — Only uyse CNG.
+//
+//	0x00000000 —                                      — Only use CryptoAPI.
+//	0x00010000 — CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG  — Prefer CryptoAPI.
+//	0x00020000 — CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG — Prefer CNG.
+//	0x00040000 — CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG   — Only uyse CNG.
 var winAPIFlag C.DWORD = C.CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG
 
 // winStore is a wrapper around a C.HCERTSTORE.
@@ -75,12 +76,52 @@ type winStore struct {
 	store C.HCERTSTORE
 }
 
+var StoreOptions UseStore
+
+type UseStore struct {
+	CurrentUser    bool
+	LocalMachine   bool
+	CurrentService bool
+}
+
+func useMachineStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = true
+}
+
+func useUserStore() {
+	StoreOptions.CurrentUser = true
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = false
+}
+
+func useServiceStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = true
+	StoreOptions.LocalMachine = false
+
+}
+
 // openStore opens the current user's personal cert store.
 func openStore() (*winStore, error) {
 	storeName := unsafe.Pointer(stringToUTF16("MY"))
 	defer C.free(storeName)
 
-	store := C.CertOpenStore(CERT_STORE_PROV_SYSTEM_W, 0, 0, C.CERT_SYSTEM_STORE_CURRENT_USER, storeName)
+	var certSystemStore uintptr
+	switch {
+	case StoreOptions.CurrentUser:
+		certSystemStore = C.CERT_SYSTEM_STORE_CURRENT_USER
+	case StoreOptions.LocalMachine:
+		certSystemStore = C.CERT_SYSTEM_STORE_LOCAL_MACHINE
+	case StoreOptions.CurrentService:
+		certSystemStore = C.CERT_SYSTEM_STORE_CURRENT_SERVICE
+	default:
+		// Default behavior, if no option is selected
+		certSystemStore = C.CERT_SYSTEM_STORE_CURRENT_USER
+	}
+
+	store := C.CertOpenStore(CERT_STORE_PROV_SYSTEM_W, 0, 0, certSystemStore, storeName)
 	if store == nil {
 		return nil, lastError("failed to open system cert store")
 	}
