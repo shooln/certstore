@@ -78,38 +78,27 @@ type winStore struct {
 
 var StoreOptions UseStore
 
-func validateStoreOptions() {
-	count := 0
-	lastTrueIndex := -1
-	if StoreOptions.CurrentUser {
-		count++
-		lastTrueIndex = 0
-	}
-	if StoreOptions.CurrentService {
-		count++
-		lastTrueIndex = 1
-	}
-	if StoreOptions.LocalMachine {
-		count++
-		lastTrueIndex = 2
-	}
-	if count > 1 {
-		switch lastTrueIndex {
-		case 0:
-			StoreOptions.CurrentService, StoreOptions.LocalMachine = false, false
-		case 1:
-			StoreOptions.CurrentUser, StoreOptions.LocalMachine = false, false
-		case 2:
-			StoreOptions.CurrentUser, StoreOptions.CurrentService = false, false
-		}
-	}
+func MachineStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = true
+}
 
-	return
+func UserStore() {
+	StoreOptions.CurrentUser = true
+	StoreOptions.CurrentService = false
+	StoreOptions.LocalMachine = false
+}
+
+func ServiceStore() {
+	StoreOptions.CurrentUser = false
+	StoreOptions.CurrentService = true
+	StoreOptions.LocalMachine = false
+
 }
 
 // openStore opens the current user's personal cert store.
 func openStore() (*winStore, error) {
-	validateStoreOptions()
 	storeName := unsafe.Pointer(stringToUTF16("MY"))
 	defer C.free(storeName)
 
