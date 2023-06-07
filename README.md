@@ -1,3 +1,5 @@
+
+this is a modified clone of github.com/github/smimesign/certstore. This has added features of accessing different cert stores. 
 Certstore is a Go library for accessing user identities stored in platform certificate stores. On Windows and macOS, certstore can enumerate user identities and sign messages with their private keys.
 
 ## Example
