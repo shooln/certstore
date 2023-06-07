@@ -76,27 +76,27 @@ type winStore struct {
 	store C.HCERTSTORE
 }
 
-var StoreOptions UseStore
-
-type UseStore struct {
+type StoreTypes struct {
 	CurrentUser    bool
 	LocalMachine   bool
 	CurrentService bool
 }
 
-func useMachineStore() {
+var StoreOptions StoreTypes
+
+func MachineStore() {
 	StoreOptions.CurrentUser = false
 	StoreOptions.CurrentService = false
 	StoreOptions.LocalMachine = true
 }
 
-func useUserStore() {
+func UserStore() {
 	StoreOptions.CurrentUser = true
 	StoreOptions.CurrentService = false
 	StoreOptions.LocalMachine = false
 }
 
-func useServiceStore() {
+func ServiceStore() {
 	StoreOptions.CurrentUser = false
 	StoreOptions.CurrentService = true
 	StoreOptions.LocalMachine = false
