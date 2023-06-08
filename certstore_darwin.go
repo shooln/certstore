@@ -36,6 +36,22 @@ var (
 // windows, so we provide those methods here too.
 type macStore int
 
+// bogus function. Exists in windows so need it here
+func UseMachineStore() {
+	return
+}
+
+// bogus function. Exists in windows so need it here
+func UseUserStore() {
+	return
+}
+
+// bogus function. Exists in windows so need it here
+func UseServiceStore() {
+	return
+
+}
+
 // openStore is a function for opening a macStore.
 func openStore() (macStore, error) {
 	return macStore(0), nil
