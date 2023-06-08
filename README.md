@@ -1,5 +1,3 @@
-# certstore [![PkgGoDev](https://pkg.go.dev/badge/github.com/github/smimesign/certstore?tab=doc)](https://pkg.go.dev/github.com/github/smimesign/certstore?tab=doc)
-
 Certstore is a Go library for accessing user identities stored in platform certificate stores. On Windows and macOS, certstore can enumerate user identities and sign messages with their private keys.
 
 ## Example

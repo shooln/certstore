@@ -17,6 +17,14 @@ func Open() (Store, error) {
 	return openStore()
 }
 
+type UseStore interface {
+	MachineStore()
+
+	UserStore()
+
+	ServiceStore()
+}
+
 // Store represents the system's certificate store.
 type Store interface {
 	// Identities gets a list of identities from the store.
