@@ -84,19 +84,19 @@ type StoreTypes struct {
 
 var StoreOptions StoreTypes
 
-func MachineStore() {
+func UseMachineStore() {
 	StoreOptions.CurrentUser = false
 	StoreOptions.CurrentService = false
 	StoreOptions.LocalMachine = true
 }
 
-func UserStore() {
+func UseUserStore() {
 	StoreOptions.CurrentUser = true
 	StoreOptions.CurrentService = false
 	StoreOptions.LocalMachine = false
 }
 
-func ServiceStore() {
+func UseServiceStore() {
 	StoreOptions.CurrentUser = false
 	StoreOptions.CurrentService = true
 	StoreOptions.LocalMachine = false
@@ -107,8 +107,8 @@ func ServiceStore() {
 func openStore() (*winStore, error) {
 	storeName := unsafe.Pointer(stringToUTF16("MY"))
 	defer C.free(storeName)
-
-	var certSystemStore uintptr
+  
+	var certSystemStore C.DWORD
 	switch {
 	case StoreOptions.CurrentUser:
 		certSystemStore = C.CERT_SYSTEM_STORE_CURRENT_USER
@@ -678,7 +678,7 @@ func (c errCode) Error() string {
 	if cmsg == nil {
 		return fmt.Sprintf("Error %X", int(c))
 	}
-	defer C.LocalFree(C.HLOCAL(cmsg))
+	defer C.LocalFree(C.HLOCAL(C.HLOCAL(unsafe.Pointer(cmsg))))
 
 	gomsg := C.GoString(cmsg)
 
