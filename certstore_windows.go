@@ -107,7 +107,7 @@ func UseServiceStore() {
 func openStore() (*winStore, error) {
 	storeName := unsafe.Pointer(stringToUTF16("MY"))
 	defer C.free(storeName)
-
+  
 	var certSystemStore C.DWORD
 	switch {
 	case StoreOptions.CurrentUser:
