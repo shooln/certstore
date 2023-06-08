@@ -37,20 +37,13 @@ var (
 type macStore int
 
 // bogus function. Exists in windows so need it here
-func UseMachineStore() {
-	return
-}
+func UseMachineStore() {}
 
 // bogus function. Exists in windows so need it here
-func UseUserStore() {
-	return
-}
+func UseUserStore() {}
 
 // bogus function. Exists in windows so need it here
-func UseServiceStore() {
-	return
-
-}
+func UseServiceStore() {}
 
 // openStore is a function for opening a macStore.
 func openStore() (macStore, error) {
