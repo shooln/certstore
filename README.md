@@ -1,4 +1,4 @@
-this is a clone of https://github.com/github/smimesign/tree/main/certstore, The primary change that was made was to add support for differnet stores availible in windows. Like machine / service stores. 
+this is a clone of https://github.com/github/smimesign/tree/main/certstore, The primary change that was made was to add support for differnet stores available in windows. Like machine / service stores. 
 
 ## Example
 
