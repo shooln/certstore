@@ -1,4 +1,4 @@
-Certstore is a Go library for accessing user identities stored in platform certificate stores. On Windows and macOS, certstore can enumerate user identities and sign messages with their private keys.
+this is a clone of https://github.com/github/smimesign/tree/main/certstore, The primary change that was made was to add support for differnet stores availible in windows. Like machine / service stores. 
 
 ## Example
 
@@ -27,8 +27,12 @@ func main() {
 }
 
 func signWithMyIdentity(cn, msg string) ([]byte, error) {
+	//specify which store to use for windows
+	certstore.UseMachineStore()
+
 	// Open the certificate store for use. This must be Close()'ed once you're
 	// finished with the store and any identities it contains.
+
 	store, err := certstore.Open()
 	if err != nil {
 		return nil, err
